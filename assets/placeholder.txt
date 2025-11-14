@@ -1,0 +1,5 @@
+Placeholder file for assets folder.
+Icon files (icon.png, splash.png, adaptive-icon.png, notification-icon.png, favicon.png) should be added here.
+For development, the app will work without these assets.
+
+
