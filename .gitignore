@@ -2,7 +2,12 @@ node_modules/
 .expo/
 dist/
 npm-debug.*
+*.log
+*.tmp
+*.swp
+*.swo
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
@@ -10,5 +15,56 @@ npm-debug.*
 *.orig.*
 web-build/
 .DS_Store
+.vscode/
+.idea/
+*.code-workspace
+.metro-cache/
+.gradle/
+.bundle/
+
+# Android
+android/.gradle/
+android/.idea/
+android/local.properties
+android/build/
+android/app/build/
+*.apk
+*.aab
+
+# iOS
+ios/build/
+ios/DerivedData/
+ios/Pods/
+ios/*.xcworkspace/xcuserdata/
+ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+*.ipa
+*.app.dSYM.zip
+*.app.zip
+
+# Expo/Web
+.expo-shared/
+
+# Caches
+.eslintcache
+.cache/
+.nyc_output/
+coverage/
+jest-html-reporters-*/
+junit.xml
+Thumbs.db
+
+# Env files (keep examples)
+.env
+.env.*
+!.env.example
+
+# Fastlane (if used)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Lockfiles (using yarn)
+package-lock.json
 
 

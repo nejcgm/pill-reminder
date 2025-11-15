@@ -1,18 +1,25 @@
 {
   "expo": {
-    "name": "Kill Pill",
-    "slug": "pill-reminder",
-    "icon": "./assets/poison-icon.png",
+    "name": "Kill Pill development",
+    "slug": "pill-reminder-development",
     "version": "2.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "icon": "./assets/poison_icon.png",
     "splash": {
+      "image": "./assets/poison_icon.png", 
       "resizeMode": "contain",
       "backgroundColor": "#007AFF"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pillreminder.app"
+      "bundleIdentifier": "com.pillreminder.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "package": "com.pillreminder.app",
@@ -27,7 +34,7 @@
         {
           "color": "#007AFF",
           "sounds": [
-            "./assets/notification-sounds/take-your-pills-notification.wav"
+            "./assets/notification-sounds/take_your_pills_notification.wav"
           ]
         }
       ]

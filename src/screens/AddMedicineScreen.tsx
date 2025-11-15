@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList, Medicine } from '../types';
@@ -23,6 +24,7 @@ export default function AddMedicineScreen({ navigation }: Props) {
   const [repeatInterval, setRepeatInterval] = useState('');
   const [maxRepeats, setMaxRepeats] = useState('');
   const [snoozeTime, setSnoozeTime] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const validateTime = (timeStr: string): boolean => {
     const regex = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
@@ -30,6 +32,7 @@ export default function AddMedicineScreen({ navigation }: Props) {
   };
 
   const handleSave = async () => {
+    if (saving) return;
     if (!name.trim()) {
       Alert.alert('Error', 'Please enter medicine name');
       return;
@@ -55,6 +58,7 @@ export default function AddMedicineScreen({ navigation }: Props) {
     };
 
     try {
+      setSaving(true);
       await saveMedicine(medicine);
       await scheduleNotificationForMedicine(medicine);
       Alert.alert('Success', 'Medicine added and notifications scheduled!', [
@@ -62,6 +66,8 @@ export default function AddMedicineScreen({ navigation }: Props) {
       ]);
     } catch (error) {
       Alert.alert('Error', 'Failed to save medicine');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -121,8 +127,13 @@ export default function AddMedicineScreen({ navigation }: Props) {
         <TouchableOpacity 
           style={styles.saveButton}
           onPress={handleSave}
+          disabled={saving}
         >
-          <Text style={styles.saveButtonText}>Save Medicine</Text>
+          {saving ? (
+            <ActivityIndicator color="#ffffff" />
+          ) : (
+            <Text style={styles.saveButtonText}>Save Medicine</Text>
+          )}
         </TouchableOpacity>
       </View>
     </ScrollView>

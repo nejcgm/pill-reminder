@@ -1,9 +1,9 @@
 import { Medicine } from '../types';
+import { addMinutes } from 'date-fns';
 import { updateMedicine, getMedicines } from '../storage';
 import {
   cancelAllNotifications,
   scheduleNotificationForMedicine,
-  scheduleSnoozeNotification,
 } from '../notifications';
 
 export const handleTake = async (medicine: Medicine): Promise<void> => {
@@ -30,7 +30,9 @@ export const handleSnooze = async (medicine: Medicine, snoozeMinutes?: number): 
     await cancelAllNotifications();
     
     const snoozeTime = snoozeMinutes || medicine.snoozeTime;
-    await scheduleSnoozeNotification(medicine, snoozeTime);
+    const startAt = addMinutes(new Date(), snoozeTime);
+    // Reset the cycle to start after the chosen snooze
+    await scheduleNotificationForMedicine(medicine, startAt);
     
     const allMedicines = await getMedicines();
     for (const med of allMedicines) {

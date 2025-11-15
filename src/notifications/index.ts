@@ -2,45 +2,60 @@ import * as Notifications from 'expo-notifications';
 import { addMinutes, setHours, setMinutes, setSeconds, isAfter, addDays } from 'date-fns';
 import { Medicine } from '../types';
 
-export const scheduleNotificationForMedicine = async (medicine: Medicine): Promise<string[]> => {
+export const scheduleNotificationForMedicine = async (
+  medicine: Medicine,
+  startAt?: Date,
+  cyclesRemaining: number = 5
+): Promise<string[]> => {
   const notificationIds: string[] = [];
 
   try {
     const [hours, minutes] = medicine.time.split(':').map(Number);
-    let scheduledTime = setSeconds(setMinutes(setHours(new Date(), hours), minutes), 0);
+    let cycleStartTime =
+      startAt ??
+      setSeconds(setMinutes(setHours(new Date(), hours), minutes), 0);
 
-    if (isAfter(new Date(), scheduledTime)) {
-      scheduledTime = addDays(scheduledTime, 1);
+    if (!startAt && isAfter(new Date(), cycleStartTime)) {
+      cycleStartTime = addDays(cycleStartTime, 1);
     }
 
+    // Initial notification for this cycle
     const firstNotificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Nejc wants you to take your medicine!❤️',
         body: `Remember to take ${medicine.name}`,
-        sound: 'take-your-pills-notification.wav',
+        sound: 'take_your_pills_notification',
         priority: Notifications.AndroidNotificationPriority.HIGH,
       },
-      trigger: scheduledTime,
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: cycleStartTime },
     });
-
     notificationIds.push(firstNotificationId);
 
-    if (medicine.maxRepeats > 0 && medicine.repeatInterval > 0) {
+    // Repeats for this cycle
+    const hasRepeats = medicine.maxRepeats > 0 && medicine.repeatInterval > 0;
+    let lastReminderTime = cycleStartTime;
+    if (hasRepeats) {
       for (let i = 1; i <= medicine.maxRepeats; i++) {
-        const repeatTime = addMinutes(scheduledTime, medicine.repeatInterval * i);
-        
+        lastReminderTime = addMinutes(cycleStartTime, medicine.repeatInterval * i);
         const repeatNotificationId = await Notifications.scheduleNotificationAsync({
           content: {
             title: 'Reminder: Nejc wants you to take your medicine!🤨',
             body: `${medicine.name} - Repeat reminder ${i}`,
-            sound: 'take-your-pills-notification.wav',
+            sound: 'take_your_pills_notification',
             priority: Notifications.AndroidNotificationPriority.HIGH,
           },
-          trigger: repeatTime,
+          trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: lastReminderTime },
         });
-
         notificationIds.push(repeatNotificationId);
       }
+    }
+
+    // Schedule next cycle recursively after snooze, bounded by cyclesRemaining
+    const snoozeMinutes = medicine.snoozeTime || 10;
+    const nextCycleStart = addMinutes(hasRepeats ? lastReminderTime : cycleStartTime, snoozeMinutes);
+    if (cyclesRemaining > 1) {
+      const nextIds = await scheduleNotificationForMedicine(medicine, nextCycleStart, cyclesRemaining - 1);
+      notificationIds.push(...nextIds);
     }
 
     return notificationIds;
@@ -50,29 +65,6 @@ export const scheduleNotificationForMedicine = async (medicine: Medicine): Promi
   }
 };
 
-export const scheduleSnoozeNotification = async (
-  medicine: Medicine,
-  snoozeMinutes: number
-): Promise<string> => {
-  try {
-    const snoozeTime = addMinutes(new Date(), snoozeMinutes);
-
-    const notificationId = await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'You snoozed Nejc is mad!😡',
-        body: `Snoozed reminder for ${medicine.name}`,
-        sound: 'take-your-pills-notification.wav',
-        priority: Notifications.AndroidNotificationPriority.HIGH,
-      },
-      trigger: snoozeTime,
-    });
-
-    return notificationId;
-  } catch (error) {
-    console.error('Error scheduling snooze notification:', error);
-    throw error;
-  }
-};
 
 export const cancelAllNotifications = async (): Promise<void> => {
   try {
