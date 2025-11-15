@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Kill Pill development",
-    "slug": "pill-reminder-development",
+    "name": "Kill Pill",
+    "slug": "pill-reminder",
     "version": "2.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
