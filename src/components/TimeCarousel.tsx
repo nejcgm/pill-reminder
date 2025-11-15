@@ -170,9 +170,6 @@ export default function TimeCarousel({
             ? { paddingHorizontal: sidePadding }
             : { paddingVertical: sidePadding },
         ]}
-        // ListFooterComponent={() => (
-        //   <View style={orientation === 'horizontal' ? { width: sidePadding } : { height: sidePadding }} />
-        // )}
         style={[
           styles.list,
           orientation === 'horizontal' ? { width: mainLen, height: 64 } : { height: mainLen, width: itemSize },
@@ -207,9 +204,6 @@ export default function TimeCarousel({
             ? { paddingHorizontal: sidePadding }
             : { paddingVertical: sidePadding },
         ]}
-        // ListFooterComponent={() => (
-        //   <View style={orientation === 'horizontal' ? { width: sidePadding } : { height: sidePadding }} />
-        // )}
         style={[
           styles.list,
           orientation === 'horizontal' ? { width: mainLen, height: 64 } : { height: mainLen, width: itemSize },

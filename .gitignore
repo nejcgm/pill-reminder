@@ -22,7 +22,10 @@ web-build/
 .gradle/
 .bundle/
 
+cursor-pill-reminder.cursor/
+
 # Android
+android/
 android/.gradle/
 android/.idea/
 android/local.properties
@@ -40,6 +43,7 @@ ios/*.xcodeproj/project.xcworkspace/xcuserdata/
 *.ipa
 *.app.dSYM.zip
 *.app.zip
+ios/
 
 # Expo/Web
 .expo-shared/
