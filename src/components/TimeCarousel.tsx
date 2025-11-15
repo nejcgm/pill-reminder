@@ -152,6 +152,7 @@ export default function TimeCarousel({
         renderItem={(info) => renderItem(info, hourIndex)}
         showsHorizontalScrollIndicator={orientation === 'horizontal'}
         showsVerticalScrollIndicator={orientation === 'vertical'}
+        nestedScrollEnabled
         snapToInterval={itemSize}
         snapToAlignment="center"
         decelerationRate="fast"
@@ -188,6 +189,7 @@ export default function TimeCarousel({
         renderItem={(info) => renderItem(info, minuteIndex)}
         showsHorizontalScrollIndicator={orientation === 'horizontal'}
         showsVerticalScrollIndicator={orientation === 'vertical'}
+        nestedScrollEnabled
         snapToInterval={itemSize}
         snapToAlignment="center"
         decelerationRate="fast"

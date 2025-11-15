@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: 6,
     color: '#9d174d', // rose-700
   },
   input: {
@@ -21,14 +21,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   saveButton: {
     backgroundColor: '#ec4899', // pink-500
     paddingVertical: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 6,
   },
   saveButtonText: {
     color: '#ffffff',

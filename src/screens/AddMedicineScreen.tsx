@@ -72,7 +72,7 @@ export default function AddMedicineScreen({ navigation }: Props) {
   };
 
   return (
-    <ScrollView style={styles.screen}>
+    <ScrollView style={styles.screen} nestedScrollEnabled>
       <View style={styles.container}>
         <Text style={styles.label}>Medicine Name</Text>
         <TextInput
